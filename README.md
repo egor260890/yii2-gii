@@ -10,7 +10,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist egor260890/yii2-gii --dev"*"
+php composer require --prefer-dist egor260890/yii2-gii "*"
 ```
 
 or add
