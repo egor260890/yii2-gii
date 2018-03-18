@@ -1,0 +1,23 @@
+{
+    "name": "egor260890/yii2-gii",
+    "description": "yii2-gii",
+    "type": "yii2-extension",
+    "keywords": ["yii2"," extension"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Egor Maznev",
+            "email": "egor260890@mail.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "egor260890\\gii\\": ""
+        }
+    }
+}
