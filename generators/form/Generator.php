@@ -57,7 +57,7 @@ class Generator extends \yii\gii\Generator
 
         $files = [];
         $db = $this->getDbConnection();
-        $tableSchema=$db->getTableSchema('products');
+        $tableSchema=$db->getTableSchema($this->modelClass::tableName());
 
         $params = [
            'className' => $this->formClass,
