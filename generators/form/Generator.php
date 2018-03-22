@@ -7,7 +7,7 @@
 
 namespace egor260890\gii\generators\form;
 
-use core\entities\Product;
+
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
@@ -60,11 +60,11 @@ class Generator extends \yii\gii\Generator
         $tableSchema=$db->getTableSchema($this->modelClass::tableName());
 
         $params = [
-           'className' => $this->formClass,
-           'entityName'=>StringHelper::basename($this->modelClass),
+            'className' => $this->formClass,
+            'entityName'=>StringHelper::basename($this->modelClass),
             'labels' => $this->generateLabels($tableSchema),
             'rules' => $this->generateRules($tableSchema),
-        ];
+            'properties' => $this->generateProperties($tableSchema),        ];
 
         $files[] = new CodeFile(
             $this->getFormFile(),
@@ -149,21 +149,6 @@ class Generator extends \yii\gii\Generator
 <pre>$code</pre>
 EOD;
     }
-
-    /**
-     * @return array list of safe attributes of [[modelClass]]
-     */
-    public function getModelAttributes()
-    {
-        /* @var $model Model */
-        $model = new $this->modelClass();
-        if (!empty($this->scenarioName)) {
-            $model->setScenario($this->scenarioName);
-        }
-
-        return $model->safeAttributes();
-    }
-
 
     public function validateModelClass()
     {
@@ -324,6 +309,28 @@ EOD;
         }
 
         return false;
+    }
+
+    protected function generateProperties($table)
+    {
+        $properties = [];
+        foreach ($table->columns as $column) {
+            $columnPhpType = $column->phpType;
+            if ($columnPhpType === 'integer') {
+                $type = 'int';
+            } elseif ($columnPhpType === 'boolean') {
+                $type = 'bool';
+            } else {
+                $type = $columnPhpType;
+            }
+            $properties[$column->name] = [
+                'type' => $type,
+                'name' => $column->name,
+                'comment' => $column->comment,
+            ];
+        }
+
+        return $properties;
     }
 
 }

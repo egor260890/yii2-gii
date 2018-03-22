@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\StringHelper;
+use yii\helpers\Inflector;
 /**
  * This is the template for generating the model class of a specified table.
  */
@@ -34,15 +35,16 @@ use <?=$generator->modelClass?>;
 */
 class <?=StringHelper::basename($className)?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-<?php foreach ($generator->getModelAttributes() as $attribute): ?>
-    private $<?=$attribute?>;
+
+<?php foreach ($properties as $property => $data): ?><?php if($property=='id'){continue;}?>
+    private $<?=$property?>;
 <?php endforeach; ?>
 
     public function __construct(<?=$entityName?> <?=$entitity_varname?>=null ,array $config = []){
         if(<?=$entitity_varname?>){
-<?php foreach ($generator->getModelAttributes() as $attribute): ?>
-            $this-><?=$attribute?>=<?=$entitity_varname?>-><?=$attribute?>;
-<?php endforeach; ?>
+<?php foreach ($properties as $property => $data):?><?php if($property=='id'){continue;}?>
+            $this-><?=$property?>=<?=$entitity_varname?>-><?=$property?>;
+<?php endforeach;?>
         }
         return parent::__construct();
     }
@@ -61,13 +63,13 @@ class <?=StringHelper::basename($className)?> extends <?= '\\' . ltrim($generato
         ];
     }
 
-<?php foreach ($generator->getModelAttributes() as $attribute): ?>
-    public function get<?=ucfirst($attribute)?>(){
-        return $this-><?=$attribute?>;
+<?php foreach ($properties as $property => $data):?><?php if($property=='id'){continue;}?>
+    public function get<?=ucfirst($property)?>(){
+        return $this-><?=$property?>;
     }
 
-    public function set<?=ucfirst($attribute)?>($<?=$attribute?>){
-        $this-><?=$attribute?>=$<?=$attribute?>;
+    public function set<?=ucfirst($property)?>($<?=$property?>){
+        $this-><?=$property?>=$<?=$property?>;
     }
 
 <?php endforeach; ?>
