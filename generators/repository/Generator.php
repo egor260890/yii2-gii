@@ -31,9 +31,8 @@ class Generator extends \yii\gii\Generator
     /**
      * @var string the controller class name
      */
-  //  public $controllerClass;
 
-    public $repositoryClass;
+    public $repositoryClass='core\repositories\MyRepository';
 
 
     /**
@@ -60,7 +59,7 @@ class Generator extends \yii\gii\Generator
         return array_merge(parent::rules(), [
             [['repositoryClass','modelClass'], 'filter', 'filter' => 'trim'],
             [['repositoryClass','modelClass'], 'required'],
-            ['repositoryClass', 'match', 'pattern' => '/^[\w\\\\]*Repository$/', 'message' => 'Only word characters and backslashes are allowed, and the class name must end with "Controller".'],
+            ['repositoryClass', 'match', 'pattern' => '/^[\w\\\\]*Repository$/', 'message' => 'Only word characters and backslashes are allowed, and the class name must end with "Repository".'],
             ['repositoryClass', 'validateNewClass'],
         ]);
     }
@@ -70,30 +69,11 @@ class Generator extends \yii\gii\Generator
     /**
      * @inheritdoc
      */
-  //  public function requiredTemplates()
-  //  {
-  //      return [
-  //          'controller.php',
-  //          'view.php',
-  //      ];
-  //  }
-
-    /**
-     * @inheritdoc
-     */
-  // public function stickyAttributes()
-  // {
-  //     return ['baseClass'];
-  // }
-
-    /**
-     * @inheritdoc
-     */
     public function hints()
     {
         return [
             'modelClass' => 'Model class',
-            'repositoryPath' => 'Repository path',
+          //  'repositoryPath' => 'Repository path',
         ];
     }
 
@@ -102,28 +82,7 @@ class Generator extends \yii\gii\Generator
      */
     public function successMessage()
     {
-        return 'The repository has been generated successfully.' . $this->getLinkToTry();
-    }
-
-    /**
-     * This method returns a link to try controller generated
-     * @see https://github.com/yiisoft/yii2-gii/issues/182
-     * @return string
-     * @since 2.0.6
-     */
-    private function getLinkToTry()
-    {
-        if (strpos($this->repositoryNamespace, Yii::$app->controllerNamespace) !== 0) {
-            return '';
-        }
-//переписать
-        $actions = $this->getActionIDs();
-        if (in_array('index', $actions, true)) {
-            $route = $this->getControllerSubPath() . $this->getControllerID() . '/index';
-        } else {
-            $route = $this->getControllerSubPath() . $this->getControllerID() . '/' . reset($actions);
-        }
-        return ' You may ' . Html::a('try it now', Yii::$app->getUrlManager()->createUrl($route), ['target' => '_blank', 'rel' => 'noopener noreferrer']) . '.';
+        return 'The repository has been generated successfully.';
     }
 
     /**
@@ -149,15 +108,6 @@ class Generator extends \yii\gii\Generator
     public function getRepositoryFile()
     {
         return Yii::getAlias('@' . str_replace('\\', '/', $this->repositoryClass)) . '.php';
-    }
-
-    /**
-     * @return string the controller ID
-     */
-    public function getControllerID()
-    {
-        $name = StringHelper::basename($this->controllerClass);
-        return Inflector::camel2id(substr($name, 0, strlen($name) - 10));
     }
 
 

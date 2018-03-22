@@ -21,6 +21,7 @@ class Module extends \yii\gii\Module
             'repository' => ['class' => 'egor260890\gii\generators\repository\Generator'],
             'entity' => ['class' => 'egor260890\gii\generators\entity\Generator'],
             'formFromEntity' => ['class' => 'egor260890\gii\generators\form\Generator'],
+            'service' => ['class' => 'egor260890\gii\generators\service\Generator'],
             'crud' => ['class' => 'yii\gii\generators\crud\Generator'],
             'controller' => ['class' => 'yii\gii\generators\controller\Generator'],
             'form' => ['class' => 'yii\gii\generators\form\Generator'],

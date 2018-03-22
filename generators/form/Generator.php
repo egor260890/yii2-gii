@@ -151,17 +151,6 @@ EOD;
     }
 
     /**
-     * Validates [[viewPath]] to make sure it is a valid path or path alias and exists.
-     */
-    public function validateViewPath()
-    {
-        $path = Yii::getAlias($this->viewPath, false);
-        if ($path === false || !is_dir($path)) {
-            $this->addError('viewPath', 'View path does not exist.');
-        }
-    }
-
-    /**
      * @return array list of safe attributes of [[modelClass]]
      */
     public function getModelAttributes()

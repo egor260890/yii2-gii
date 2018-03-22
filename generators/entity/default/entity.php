@@ -39,6 +39,7 @@ $entitity_varname=strtolower($className);
 <?php
     $property_args='';
     foreach ($properties as $property => $data){
+        if ($property=='id'){continue;}
         $property_args.='$'.$property.',';
     }
     if($property_args){
@@ -52,17 +53,17 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
 
 
 
-    public function create(<?=$property_args?>):self
+    public static function create(<?=$property_args?>):self
     {
         $<?=$entitity_varname?>=new static();
-<?php foreach ($properties as $property => $data): ?>
+<?php foreach ($properties as $property => $data): ?><?php if ($property=='id'){continue;}?>
         $<?=$entitity_varname?>-><?=$property?>=$<?=$property?>;
 <?php endforeach;?>
         return $<?=$entitity_varname?>;
     }
 
     public function edit(<?=$property_args?>){
-<?php foreach ($properties as $property => $data): ?>
+<?php foreach ($properties as $property => $data): ?><?php if ($property=='id'){continue;}?>
         $this-><?=$property?>=$<?=$property?>;
 <?php endforeach;?>
     }
