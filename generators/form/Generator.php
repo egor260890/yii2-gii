@@ -30,6 +30,7 @@ class Generator extends \yii\gii\Generator
     public $db = 'db';
     public $generateLabelsFromComments = false;
     public $generateRelationsFromCurrentSchema = true;
+	public $tableName;
 
     public $modelClass;
     public $formClass;
@@ -331,6 +332,46 @@ EOD;
         }
 
         return $properties;
+    }
+	
+	protected $tableNames;
+    protected $classNames;
+	
+	 protected function generateClassName($tableName, $useSchemaName = null)
+    {
+        if (isset($this->classNames[$tableName])) {
+            return $this->classNames[$tableName];
+        }
+
+        $schemaName = '';
+        $fullTableName = $tableName;
+        if (($pos = strrpos($tableName, '.')) !== false) {
+            if (($useSchemaName === null && $this->useSchemaName) || $useSchemaName) {
+                $schemaName = substr($tableName, 0, $pos) . '_';
+            }
+            $tableName = substr($tableName, $pos + 1);
+        }
+
+        $db = $this->getDbConnection();
+        $patterns = [];
+        $patterns[] = "/^{$db->tablePrefix}(.*?)$/";
+        $patterns[] = "/^(.*?){$db->tablePrefix}$/";
+        if (strpos($this->tableName, '*') !== false) {
+            $pattern = $this->tableName;
+            if (($pos = strrpos($pattern, '.')) !== false) {
+                $pattern = substr($pattern, $pos + 1);
+            }
+            $patterns[] = '/^' . str_replace('*', '(\w+)', $pattern) . '$/';
+        }
+        $className = $tableName;
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $tableName, $matches)) {
+                $className = $matches[1];
+                break;
+            }
+        }
+
+        return $this->classNames[$fullTableName] = Inflector::id2camel($schemaName.$className, '_');
     }
 
 }
